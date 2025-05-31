@@ -1,0 +1,19 @@
+# wskdeploy manifest file
+
+packages:
+  default:
+    version: 1.0
+    license: Apache-2.0
+    actions:
+      helloTekton:
+        function: target/hello-tekton.jar
+        runtime: java
+        main: com.ibm.developer.FunctionApp
+        web-export: true
+    apis:
+      helloTektonAPI: #Endpoint ID
+        api: #API Basepath
+          helloTekton: #Endpoint Path
+            helloTekton: #Function Reference
+              method: GET
+              response: json 

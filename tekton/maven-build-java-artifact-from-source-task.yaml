@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: maven-build-java-artifact-from-source
+spec:
+  workspaces:
+  - name: source
+  params:
+    - name: path-to-context
+      description: Path to maven POM.xml file
+      default: .
+  steps:
+    - name: list-src
+      image: alpine
+      command:
+        - "ls"
+      args:
+        - "$(workspaces.source.path)"
+    - name: mvn
+      image: gcr.io/cloud-builders/mvn
+      workingDir: /workspace/source/$(params.path-to-context)
+      command: ["/usr/bin/mvn"]
+      args:
+        - "package"

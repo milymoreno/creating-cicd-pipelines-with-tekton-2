@@ -1,0 +1,15 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: verify-deployment
+spec:
+  params:
+    - name: verification-message
+      description: Message verifying that the deployed image can be pulled. A placeholder for the deployment verification
+      default: The deployment has been verified     
+  steps:
+    - name: deploy-app
+      image: ubuntu
+      command: ["/bin/bash", "-c"]
+      args:
+        - echo $(verification-message)

@@ -1,0 +1,12 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: manual-event-listener
+spec:
+  serviceAccountName: service-account
+  triggers:
+  - name: manual-event-trigger
+    template:
+      name: project-trigger-template
+    bindings:
+    - name: manual-trigger-binding
