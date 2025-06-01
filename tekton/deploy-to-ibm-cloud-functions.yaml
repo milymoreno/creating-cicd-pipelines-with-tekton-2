@@ -5,17 +5,17 @@ metadata:
 spec:
   params:
     - name: path-to-manifest-file
-      description: The path to the YAML file to deploy within the git source
+      description: The path to the yaml file to deploy within the git source
       default: manifest.yaml
     - name: ibm-cloud-region
-      description: Region where the IBM Cloud deployment will run
+      description: Region where cluster is located
       default: us-south
     - name: api-url
       description: API URL for interacting with IBM Cloud
       default: cloud.ibm.com
     - name: cf-deprecation-message
-      description: CF is deprecated. Deployment through Cloud IDE using Code Engine can be attempted for paid cloud members.
-      default: CF is deprecated. Use Code Engine.
+      description: CF deprecation message
+      default: CF is deprecated. Use Code Engine if you're on a paid plan.
     - name: apikey
       description: IBM Cloud API Key
   workspaces:
@@ -28,7 +28,8 @@ spec:
           value: $(params.apikey)
       command: ["/bin/bash", "-c"]
       args:
-        - echo "$(params.cf-deprecation-message)" && echo "⚙️ Ready to deploy with API Key: $IBMCLOUD_API_KEY"
+        - echo $(params.cf-deprecation-message)
+
 
 # apiVersion: tekton.dev/v1beta1
 # kind: Task
