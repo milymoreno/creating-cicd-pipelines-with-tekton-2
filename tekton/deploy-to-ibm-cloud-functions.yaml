@@ -5,17 +5,17 @@ metadata:
 spec:
   params:
     - name: path-to-manifest-file
-      description: The path to the YAML file to deploy within the git source
+      description: The path to the yaml file to deploy within the git source
       default: manifest.yaml
     - name: ibm-cloud-region
-      description: Region where IBM Cloud is located
+      description: Region where cluster is located
       default: us-south
     - name: api-url
       description: API URL for interacting with IBM Cloud
       default: cloud.ibm.com
     - name: cf-deprecation-message
       description: CF deprecation message
-      default: CF is deprecated. Use Code Engine if you're on a paid plan.
+      default: CF is deprecated. Deployment through Cloud IDE using Code Engine can be attempted.
     - name: apikey
       description: IBM Cloud API Key
   workspaces:
@@ -23,49 +23,12 @@ spec:
   steps:
     - name: deploy-app
       image: icr.io/continuous-delivery/pipeline/pipeline-base-image:2.15
-      workingDir: $(workspaces.source.path)
       env:
         - name: IBMCLOUD_API_KEY
           value: $(params.apikey)
       script: |
         #!/bin/bash
         echo "$(params.cf-deprecation-message)"
-        ibmcloud config --check-version=false
-        ibmcloud login --apikey $IBMCLOUD_API_KEY -r $(params.ibm-cloud-region) -a https://$(params.api-url)
-        ibmcloud target --cf
-        ibmcloud fn deploy --manifest $(params.path-to-manifest-file)
-
-
-# apiVersion: tekton.dev/v1beta1
-# kind: Task
-# metadata:
-#   name: deploy-artifact-to-ibm-cloud-functions
-# spec:
-#   params:
-#     - name: path-to-manifest-file
-#       description: The path to the yaml file to deploy within the git source
-#       default: manifest.yaml
-#     - name: ibm-cloud-region
-#       description: Region where cluster is located
-#     - name: api-url
-#       description: API URL for interacting with IBM Cloud
-#       default: cloud.ibm.com
-#     - name: cf-deprecation-message
-#       description: CF deprecation message. And suggestion to use Code Engine
-#       default: CF is deprecated. Deployment through Cloud IDE using Code Engine can be attempted for paid cloud members.
-#     - name: apikey
-#       description: IBM Cloud API Key
-#   workspaces:
-#     - name: source
-#   steps:
-#     - name: deploy-app
-#       image: icr.io/continuous-delivery/pipeline/pipeline-base-image:2.15
-#       env:
-#         - name: IBMCLOUD_API_KEY
-#           value: $(params.apikey)
-#       command: ["/bin/bash", "-c"]
-#       args:
-#         - echo $(params.cf-deprecation-message)
 
 
 # apiVersion: tekton.dev/v1beta1
