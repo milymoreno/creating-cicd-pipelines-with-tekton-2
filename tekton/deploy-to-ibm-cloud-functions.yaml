@@ -5,10 +5,10 @@ metadata:
 spec:
   params:
     - name: path-to-manifest-file
-      description: The path to the yaml file to deploy within the git source
+      description: The path to the YAML file to deploy within the git source
       default: manifest.yaml
     - name: ibm-cloud-region
-      description: Region where cluster is located
+      description: Region where IBM Cloud is located
       default: us-south
     - name: api-url
       description: API URL for interacting with IBM Cloud
@@ -23,12 +23,17 @@ spec:
   steps:
     - name: deploy-app
       image: icr.io/continuous-delivery/pipeline/pipeline-base-image:2.15
+      workingDir: $(workspaces.source.path)
       env:
         - name: IBMCLOUD_API_KEY
           value: $(params.apikey)
-      command: ["/bin/bash", "-c"]
-      args:
-        - echo $(params.cf-deprecation-message)
+      script: |
+        #!/bin/bash
+        echo "$(params.cf-deprecation-message)"
+        ibmcloud config --check-version=false
+        ibmcloud login --apikey $IBMCLOUD_API_KEY -r $(params.ibm-cloud-region) -a https://$(params.api-url)
+        ibmcloud target --cf
+        ibmcloud fn deploy --manifest $(params.path-to-manifest-file)
 
 
 # apiVersion: tekton.dev/v1beta1
