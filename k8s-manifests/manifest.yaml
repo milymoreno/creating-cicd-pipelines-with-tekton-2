@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-tekton
+  labels:
+    app: hello-tekton
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-tekton
+  template:
+    metadata:
+      labels:
+        app: hello-tekton
+    spec:
+      securityContext:
+        runAsNonRoot: true
+      containers:
+        - name: hello-tekton
+          image: openjdk:17-jdk-slim # <-- reemplaza si tienes tu propia imagen
+          command: ["java", "-jar", "/app/hello-tekton.jar"]
+          volumeMounts:
+            - name: app-volume
+              mountPath: /app
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "100m"
+            limits:
+              memory: "1024Mi"
+              cpu: "200m"
+      volumes:
+        - name: app-volume
+          emptyDir: {}
+
+
+# #wskdeploy manifest file
+
+# packages:
+#   default:
+#     version: 1.0
+#     license: Apache-2.0
+#     actions:
+#       helloTekton:
+#         function: target/hello-tekton.jar
+#         runtime: java
+#         main: com.ibm.developer.FunctionApp
+#         web-export: true
+#     apis: 
+#       helloTektonAPI: #Endpoint ID
+#         api: #API Basepath
+#           helloTekton: #Endpoint Path
+#             helloTekton: #Function Reference
+#               method: GET
+#               response: json 
