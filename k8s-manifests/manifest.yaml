@@ -14,12 +14,14 @@ spec:
       labels:
         app: hello-tekton
     spec:
-      securityContext:
-        runAsNonRoot: true
+      # securityContext:
+      #   runAsNonRoot: true
+      #   runAsUser: 1000  # UID no root (comentado para el taller)
       containers:
         - name: hello-tekton
-          image: openjdk:17-jdk-slim # <-- reemplaza si tienes tu propia imagen
-          command: ["java", "-jar", "/app/hello-tekton.jar"]
+          image: openjdk:17-jdk-slim
+          # command: ["java", "-jar", "/app/hello-tekton.jar"]
+          command: ["sleep", "3600"]
           volumeMounts:
             - name: app-volume
               mountPath: /app
@@ -35,6 +37,7 @@ spec:
       volumes:
         - name: app-volume
           emptyDir: {}
+
 
 
 # #wskdeploy manifest file
