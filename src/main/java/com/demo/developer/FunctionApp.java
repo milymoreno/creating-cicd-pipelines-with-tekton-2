@@ -1,4 +1,4 @@
-package com.ibm.developer;
+package com.demo.developer;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
