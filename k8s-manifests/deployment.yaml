@@ -5,7 +5,7 @@ metadata:
   labels:
     app: hello-tekton
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: hello-tekton
