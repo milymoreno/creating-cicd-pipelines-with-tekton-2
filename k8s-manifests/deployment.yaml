@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-tekton
+  labels:
+    app: hello-tekton
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-tekton
+  template:
+    metadata:
+      labels:
+        app: hello-tekton
+    spec:
+      containers:
+        - name: hello-tekton
+          image: hashicorp/http-echo:0.2.3
+          command: ["/http-echo"]
+          args: ["-listen=:8080", "-text=Hello from Tekton"]
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "100m"
+            limits:
+              memory: "1024Mi"
+              cpu: "200m"

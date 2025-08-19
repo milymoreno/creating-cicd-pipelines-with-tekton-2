@@ -1,61 +1,73 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: hello-tekton
-  labels:
-    app: hello-tekton
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: hello-tekton
-  template:
-    metadata:
-      labels:
-        app: hello-tekton
-    spec:
-      # securityContext:
-      #   runAsNonRoot: true
-      #   runAsUser: 1000  # UID no root (comentado para el taller)
-      containers:
-        - name: hello-tekton
-          image: openjdk:17-jdk-slim
-          # command: ["java", "-jar", "/app/hello-tekton.jar"]
-          command: ["sleep", "3600"]
-          volumeMounts:
-            - name: app-volume
-              mountPath: /app
-          ports:
-            - containerPort: 8080
-          resources:
-            requests:
-              memory: "512Mi"
-              cpu: "100m"
-            limits:
-              memory: "1024Mi"
-              cpu: "200m"
-      volumes:
-        - name: app-volume
-          emptyDir: {}
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: hello-tekton
+#   labels:
+#     app: hello-tekton
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: hello-tekton
+#   template:
+#     metadata:
+#       labels:
+#         app: hello-tekton
+#     spec:
+#       containers:
+#         - name: hello-tekton
+#           image: hashicorp/http-echo:0.2.3
+#           command: ["/http-echo"]
+#           args: ["-listen=:8080", "-text=Hello from Tekton"]
+#           ports:
+#             - containerPort: 8080
+#           resources:
+#             requests:
+#               memory: "512Mi"
+#               cpu: "100m"
+#             limits:
+#               memory: "1024Mi"
+#               cpu: "200m"
 
 
 
-# #wskdeploy manifest file
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: hello-tekton
+#   labels:
+#     app: hello-tekton
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: hello-tekton
+#   template:
+#     metadata:
+#       labels:
+#         app: hello-tekton
+#     spec:
+#       # securityContext:
+#       #   runAsNonRoot: true
+#       #   runAsUser: 1000  # UID no root (comentado para el taller)
+#       containers:
+#         - name: hello-tekton
+#           image: openjdk:17-jdk-slim
+#           # command: ["java", "-jar", "/app/hello-tekton.jar"]
+#           command: ["sleep", "3600"]
+#           volumeMounts:
+#             - name: app-volume
+#               mountPath: /app
+#           ports:
+#             - containerPort: 8080
+#           resources:
+#             requests:
+#               memory: "512Mi"
+#               cpu: "100m"
+#             limits:
+#               memory: "1024Mi"
+#               cpu: "200m"
+#       volumes:
+#         - name: app-volume
+#           emptyDir: {}
 
-# packages:
-#   default:
-#     version: 1.0
-#     license: Apache-2.0
-#     actions:
-#       helloTekton:
-#         function: target/hello-tekton.jar
-#         runtime: java
-#         main: com.ibm.developer.FunctionApp
-#         web-export: true
-#     apis: 
-#       helloTektonAPI: #Endpoint ID
-#         api: #API Basepath
-#           helloTekton: #Endpoint Path
-#             helloTekton: #Function Reference
-#               method: GET
-#               response: json 
