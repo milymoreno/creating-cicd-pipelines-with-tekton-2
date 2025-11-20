@@ -11,7 +11,7 @@ public class FunctionApp {
 		
 		String result;
 		if (nameArg == null) {
-			result = "Hello! Welcome to OpenWhisk...";
+			result = "Hello! Welcome ...";
 		} else {
 			result = "Hello " + nameArg.getAsString();
 		}
